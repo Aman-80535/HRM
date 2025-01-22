@@ -1,0 +1,120 @@
+.signup-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .signup-image {
+    flex: 1;
+    max-width: 50%;
+  }
+  
+  .signup-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .signup-form {
+    flex: 1;
+    max-width: 50%;
+    padding: 40px;
+    background-color: #003366;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .signup-form h2 {
+    margin-bottom: 10px;
+    font-size: 28px;
+    text-align: center;
+  }
+  
+  .signup-form p {
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  .signup-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .form-group input {
+    flex: 1;
+  }
+  
+  input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: #ffd700;
+  }
+  
+  .terms {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .terms a {
+    color: #ffd700;
+    text-decoration: underline;
+  }
+  
+  .form-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .register-button {
+    flex: 1;
+    padding: 10px;
+    background-color: #ffd700;
+    color: #003366;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .register-button:hover {
+    background-color: #e6b800;
+  }
+  
+  .login-button {
+    flex: 1;
+    padding: 10px;
+    background-color: #003366;
+    color: white;
+    border: 1px solid #ffd700;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    background-color: #004080;
+  }
+  
