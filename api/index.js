@@ -23,13 +23,13 @@ app.use(cookieParser());
 
 
 
-// const PORT = 8002
+const PORT = 8002
     ;
 app.use("/user", userRoute);
 
 
 
-// app.listen(PORT, () => console.log('Server starteda at PORT'))
+app.listen(PORT, () => console.log('Server starteda at PORT'))
 
 
 
