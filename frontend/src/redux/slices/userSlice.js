@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { signUpUser, LogInUser, GetAllUsers, UpdateUser } from '../actions/userActions';
 
+
 const initialState = {
   user: null,
   loading: false,
   error: null,
   signUpUserDetail: null,
+  token: null,
 };
 
 const userSlice = createSlice({
@@ -13,9 +15,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logoutUser: (state) => {
-      state.user = null;  
-      state.loading = false;
-      state.error = null;  
+      return initialState;
     },
   },
   extraReducers: (builder) => {
@@ -41,14 +41,13 @@ const userSlice = createSlice({
       })
       .addCase(LogInUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload; 
+        state.token= action.payload.token
+        state.user = action.payload.userwithoutpsd; 
       })
       .addCase(LogInUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;  
       })
-
-      
 
       .addCase(GetAllUsers.pending, (state) => {
         state.loading = true;

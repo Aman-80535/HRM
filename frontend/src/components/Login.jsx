@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import '../styles/SignUp.css';
+import '../styles/Login.css';
 import { Header } from './Header';
 import Footer from './Footer';
 import { useDispatch, useSelector, } from 'react-redux';
@@ -18,7 +18,6 @@ const LogIn = () => {
 		email: '',
 		password: ''
 	});
-
 	const dispatch = useDispatch();
 
 
@@ -28,58 +27,72 @@ const LogIn = () => {
 	};
 
 	useEffect(() => {
-    if (user && !error) {
-      navigate('/dashboard');
-    }
-  }, [user, error]);
+		if (user && !error) {
+			navigate('/dashboard');
+		}
+	}, [user, error]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		dispatch(LogInUser(formData));
+		await dispatch(LogInUser(formData));
+		if (user) {
+			navigate('/dashboard');
+		}
+		console.log("dwdwqd",error)
 	};
 
 
 	return (
 		<>
-			<Header />
-			<div className="signup-container">
-				<div className="signup-image">
-					<img
-						src="https://s3-alpha-sig.figma.com/img/b446/e426/c9c67cae79ae3b23cea34e2f1f7c067a?Expires=1738540800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=l24ma70MoiGdC9Spg9~3s9LQQlTdKYUl83b2SZrK5DSC5NBcYGhgDjRFpVVYsasN3mU8RX8G8H0ybeftRcOPvYHa4IqMZNsJHIwD9hseEsIPQahbck1yznUhzWtFEoXuWCu7KfYkjAS55DaqbFy-n46ClRCTo8ZicBB5D7su4AJEmo66RfS8UzxehsqFdcbZOaHcBQSCvYKPTW~jHDWcwcj9Bfsxs4g~gABToNCMIIeOH-kz-BLx8eIxFMU89spnrFoVrdJdj~c5mZ-zriI1s4QBH91JcJLY8h0zXh2dHOxnX3WIkIcNTvJVPzJodpriUh1Aus4ABS6Bfyr0ceyTiQ__"
-						alt="Signup Visual"
-					/>
-				</div>
-				<div className="signup-form">
-					<h2>Login</h2>
-					<p>Fill in your credentials and click on the Login button</p>
-					<form onSubmit={handleSubmit}>
-						<input
-							type="email"
-							name="email"
-							placeholder="Email address"
-							value={formData.email}
-							onChange={handleChange}
-							required
-						/>
-						<input
-							type="password"
-							name="password"
-							placeholder="Password"
-							value={formData.password}
-							onChange={handleChange}
-							required
-						/>
 
-
-						<div className="form-buttons">
-							<button type="submit" className="register-button" >{loading ? 'Loggingin...' : 'Login'}</button>
-							{error && <div className="error">{error}</div>}
-							{user && <div>Login successfully !</div>}
+			<div className="container py-5">
+				<div className="row shadow rounded overflow-hidden main-login">
+					{/* Left Section */}
+					<div className="col-md-6 left-section d-flex flex-column justify-content-center text-white p-4" style={{ backgroundColor: "#4B0082", borderRadius: "15px 0 0 15px" }}>
+						<img
+							src="https://via.placeholder.com/400x250.png?text=Dashboard+Image"
+							alt="Dashboard preview"
+							className="img-fluid rounded"
+						/>
+						<h5 className="mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod</h5>
+						<p className="mt-2">
+							Tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+						</p>
+						<div className="d-flex gap-2 mt-2">
+							<span className="bg-white rounded-circle" style={{ width: "10px", height: "10px" }}></span>
+							<span className="bg-light rounded-circle" style={{ width: "10px", height: "10px" }}></span>
+							<span className="bg-light rounded-circle" style={{ width: "10px", height: "10px" }}></span>
 						</div>
-					</form>
-				</div >
-			</div >
-			<Footer />
+					</div>
+
+					<div className="col-md-6 right-section bg-white p-4 px-5" style={{ borderRadius: "0 15px 15px 0" }}>
+						<h4 className="mb-4">Welcome to Dashboard</h4>
+						<form onSubmit={handleSubmit}>
+							<div className="mb-3">
+								<label className="form-label" >Email Address*</label>
+								<input value={formData.email}
+									onChange={handleChange}
+									required type="email" className="form-control" name="email" placeholder="Email address" />
+							</div>
+							<div className="mb-3">
+								<label className="form-label"
+
+									required>Password*</label>
+								<input type="password" className="form-control" value={formData.password} name="password"
+									onChange={handleChange} placeholder="Password" />
+							</div>
+							<button type="submit" className="btn text-white rgr-btn" style={{ backgroundColor: "#4B0082", borderRadius: "20px", }}>
+								{loading ? 'Logging...' : 'Login'}
+							</button>
+							<p style={{color: "grey", cursor:"pointer"}} className='mt-2'>Forgot Password</p>
+							{error && <div className="error" style={{ color: "red" }}>{error}</div>}
+							<p className="text-center mt-3">
+								Not having any account? <a href="user/signup" className='lgn-btn'><span style={{color: "#4D007D"}}>Register</span></a>
+							</p>
+						</form>
+					</div>
+				</div>
+			</div>
 		</>
 
 	);

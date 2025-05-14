@@ -1,0 +1,56 @@
+.left-section {
+  background-color: #4B0082; /* Indigo or purple tone */
+  color: white;
+  padding: 40px;
+  border-radius: 15px 0 0 15px;
+}
+
+
+.left-section img {
+  width: 100%;
+  border-radius: 10px;
+}
+.rgr-btn{
+  width: 60%
+}
+
+.main-login{
+  overflow-y: auto !important;
+    height: 500px;
+    scrollbar-width: none;
+}
+.login-btn{
+  color: #4D007D;
+  text-decoration: none;
+}
+.lgn-btn{
+  text-decoration: none;
+  color: #4D007D;
+}
+
+.right-section {
+  padding: 40px;
+}
+
+.form-control::placeholder {
+  color: #999;
+}
+
+.form-section {
+  border-radius: 0 15px 15px 0;
+}
+
+@media (max-width: 768px) {
+  .left-section {
+    border-radius: 15px 15px 0 0;
+  }
+
+  .form-section {
+    border-radius: 0 0 15px 15px;
+  }
+}
+
+.register-btn {
+  background-color: #4B0082;
+  color: white;
+}

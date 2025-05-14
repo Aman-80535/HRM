@@ -2,6 +2,7 @@ const express = require("express");
 const { connectToMongoDB } = require("./connect")
 
 const userRoute = require("./routes/user")
+const candidateRouter = require("./routes/candidate")
 const path = require("path");
 const cors = require('cors');
 
@@ -12,6 +13,9 @@ const cookieParser = require("cookie-parser")
 const app = express();
 connectToMongoDB('mongodb+srv://Aman:Aman%402222@aman.hu3wz.mongodb.net/?retryWrites=true&w=majority&appName=Aman')
     .then(() => console.log("MongoDb connected"))
+    .catch((err) => {
+        console.log(err)
+    })
 
 app.use(cors());
 
@@ -25,11 +29,13 @@ app.use(cookieParser());
 
 const PORT = 8002
     ;
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use("/user", userRoute);
+app.use("/candidate", candidateRouter);
 
 
 
-app.listen(PORT, () => console.log('Server starteda at PORT'))
+app.listen(PORT, () => console.log('Server started at PORT'))
 
 
 

@@ -2,7 +2,7 @@ const User = require("../models/user")
 const { setUser } = require("../service/auth")
 
 
-const allowedFields = ['firstName', 'lastName', 'contactNumber', 'whatsappNumber', 'referrelCode', 'email', 'password', 'paymentStatus'];
+const allowedFields = ['fullName','email', 'password'];
 const filterRequestBody = (body, allowedFields) => {
   return allowedFields.reduce((acc, field) => {
     if (body[field] !== undefined) acc[field] = body[field];
@@ -33,7 +33,8 @@ async function handleUserLogin(req, res) {
   if (!user)
     return res.status(500).json({ message: 'Error creating user', error: "Might be username or password is incorrect" });
   const token = setUser(user);
-  return res.json({ token })
+  const { password: pwd, ...userwithoutpsd } = user.toObject();
+  return res.json({ token, userwithoutpsd });
 }
 
 const getAllUsers = async (req, res) => {

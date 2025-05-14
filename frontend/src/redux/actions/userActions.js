@@ -10,12 +10,11 @@ export const signUpUser = createAsyncThunk(
       return response.data; 
     } catch (error) {
       console.log(error, "5676");
-      
       // Check if it's a MongoDB error (duplicate email)
       if (error.response && error.response.data && error.response.data.error) {
         const errorMessage = error.response.data.error.includes('duplicate key error')
           ? 'Email is already in use. Please use a different email.'
-          : 'An error occurred. Please try again later.';
+          : error.response.data.error ? error.response.data.error  : 'An error occurred. Please try again later.';
         
         return thunkAPI.rejectWithValue(errorMessage);  // Return a user-friendly error message
       }
@@ -31,15 +30,11 @@ export const LogInUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await axios.post('http://localhost:8002/user/login', userData);
-      await localStorage.setItem('authToken', response.data.token);
       return response.data;  // Return data if login is successful
     } catch (error) {
       console.log(error.message, "56t76");
-
-      // Check if Axios error has a response
-      if (error.response) {
-    
-        return thunkAPI.rejectWithValue('please check username or password');
+      if (error.message) {
+        return thunkAPI.rejectWithValue(error.message || 'please check username or password');
       }
     }
   }
