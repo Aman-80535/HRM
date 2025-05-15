@@ -86,7 +86,7 @@ const Attendance = () => {
 
             <div className="p-4 px-3 w-100">
                 <marquee direction="left" style={{color:"red"}}>
-                    Work in Progress
+                   filters Work in Progress
                 </marquee>
                 <div className="d-flex justify-content-between align-items-center mb-3">
                     <h5 className="fw-bold">Attendance</h5>
