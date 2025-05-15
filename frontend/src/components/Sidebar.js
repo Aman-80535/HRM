@@ -37,10 +37,10 @@ const Sidebar = () => {
 				<Link to='/employees' className='sidebar-link'>
 					<li className="mb-2 tabs-label  ms-3 d-flex gap-2"><Employees />Employees</li>
 				</Link>
-				<Link className='sidebar-link'>
+				<Link className='sidebar-link' to='/Attendance'>
 					<li className="mb-2 tabs-label ms-3 d-flex gap-2"><Attendance />Attendance</li>
 				</Link>
-				<Link className='sidebar-link'>
+				<Link to='/leaves' className='sidebar-link'>
 					<li className="mb-2 tabs-label  ms-3 d-flex gap-2"><Leaves />Leaves</li>
 				</Link>
 

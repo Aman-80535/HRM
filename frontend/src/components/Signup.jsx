@@ -1,8 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
 import '../styles/SignUp.css';
-import { Header } from './Header';
-import Footer from './Footer';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUpUser } from '../redux/actions/userActions';

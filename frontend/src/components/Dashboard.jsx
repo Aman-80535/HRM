@@ -16,7 +16,7 @@ import Sidebar from "./Sidebar";
 
 
 
-const StatusArray = [
+export const StatusArray = [
 	{ value: 'scheduled', label: 'Schedule' },
 	{ value: 'ongoing', label: 'Ongoing' },
 	{ value: 'selected', label: 'Selected' },
@@ -29,7 +29,7 @@ const Dashboard = () => {
 	const [filters, setFilters] = useState({
 		search: '',
 		status: '',
-		role: '',
+		position: '',
 	});
 
 	const debouncedFilters = useDebounce(filters);
@@ -193,7 +193,7 @@ const Dashboard = () => {
 
 						<div className="d-flex gap-2">
 							<select className="form-select w-auto border-line border-style" onChange={(e) => setFilters(p => ({ ...p, status: e.target.value }))}>
-							<option value="" disabled selected>Status</option>
+								<option value="" disabled selected>Status</option>
 								<option value=''>All</option>
 								{StatusArray.map(i =>
 									<option value={i.value}>{i.label.charAt(0) + i.label.slice(1, i.length)}</option>
@@ -201,8 +201,8 @@ const Dashboard = () => {
 
 							</select>
 							<select className="form-select w-auto border-line border-style" onChange={(e) => setFilters(p => ({ ...p, position: e.target.value }))}>
-							<option value="" disabled selected>Position</option>
-							<option key='all' value=''>All</option>
+								<option value="" disabled selected>Position</option>
+								<option key='all' value=''>All</option>
 								{
 									[...new Set(data?.data.map(d => d.position))].map((pos, ind) =>
 										<option key={ind} value={pos}>{pos}</option>)

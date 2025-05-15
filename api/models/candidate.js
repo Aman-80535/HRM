@@ -40,6 +40,9 @@ const candidateSchema = new mongoose.Schema({
     dateOfJoining: {
         type: String,
     },
+        department: {
+        type: String,
+    },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

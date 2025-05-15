@@ -3,11 +3,14 @@ import "../../styles/Modal.css";
 import { useDispatch, useSelector } from 'react-redux';
 // import { UpdateUser } from '../redux/actions/userActions';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 
 
@@ -29,20 +32,41 @@ const phoneSchema = z
     message: "Invalid phone number",
   });
 
-const candidateSchema = z.object({
-  fullName: z.string().min(1, { message: 'Name is required' }),
-  email: z.string().email({ message: 'e-mail is required' }),
-  phoneNumber: phoneSchema,
-  position: z.string().min(1, { message: 'position is required' }),
-  experience: z.number().min(0, { message: 'experience is required' }),
-  resume: resumeSchema,
-  terms: z.boolean().refine((val) => val === true, {
-    message: "You must accept the terms and conditions",
-  }),
-})
+
 
 
 const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmployeeId }) => {
+
+  const candidateSchema = z.object({
+    fullName: z.string().min(1, { message: 'Name is required' }),
+    email: z.string().email({ message: 'e-mail is required' }),
+    phoneNumber: phoneSchema,
+    position: z.string().min(1, { message: 'position is required' }),
+    experience: z.number().min(0, { message: 'experience is required' }),
+    dateOfJoining: z
+      .string()
+      .min(1, { message: "Date is required" })
+      .refine((val) => {
+        const selectedDate = new Date(val);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Ignore time for today
+        return selectedDate >= today;
+      }, {
+        message: "Date must be in the future",
+      }),
+    ...(selectedEmployeeId
+      ? {
+        department: z.string(),
+      } // not required in edit
+      : {
+        resume: resumeSchema,
+        terms: z.boolean().refine((val) => val === true, {
+          message: "You must accept the terms and conditions",
+        }),
+      }),
+  })
+
+
   const [data, setData] = useState(null);
   const [message, setMessage] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -78,12 +102,12 @@ const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmpl
 
   // Edit Employee
   const EmployeeEditMutation = useMutation({
-    mutationFn: async ({ selectedEmployeeId, data }) => {
+    mutationFn: async (data) => {
       const res = await axios.put(`${process.env.REACT_APP_API_URL}/candidate/${selectedEmployeeId}`, data);
       return res.data;
     },
     onSuccess: () => {
-      alert('Candidate  updated successfully!');
+      alert('Employee data  updated successfully!');
       closeModal();
       queryClient.invalidateQueries(['candidates']);
     },
@@ -127,6 +151,8 @@ const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmpl
   const {
     register,
     handleSubmit,
+    control,
+    watch,
     formState: { errors },
   } = useForm({
     values: data,
@@ -135,12 +161,12 @@ const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmpl
   });
 
 
-
+  console.log('watchhh', watch())
   // Handle form submission
   const onSubmit = (data) => {
     const { terms, ...formData } = data;
     if (selectedEmployeeId) {
-      EmployeeEditMutation.mutate(formData)
+      EmployeeEditMutation.mutate(data)
     }
     else {
 
@@ -210,21 +236,50 @@ const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmpl
             </div>
 
             <div className="row mt-3">
+              {
+                !selectedEmployeeId ?
+                  <div className="form-group">
+                    <input
+                      type="number"
+                      placeholder="Experience"
+                      {...register("experience", { valueAsNumber: true })}
+                    />
+                    <br />
+                    {errors.experience && (
+                      <p style={{ color: "red" }}>{errors.experience.message}</p>
+                    )}
+                  </div>
+                  :
 
-              <div className="form-group">
-                <input
-                  type="number"
-                  placeholder="Experience"
-                  {...register("experience", { valueAsNumber: true })}
-                />
-                <br />
-                {errors.experience && (
-                  <p style={{ color: "red" }}>{errors.experience.message}</p>
-                )}
-              </div>
+                  <div className="form-group">
+                    <input
+                      type='text'
+                      placeholder="department"
+                      {...register("department")}
+                    />
+                    <br />
+                    {errors.department && (
+                      <p style={{ color: "red" }}>{errors.department.message}</p>
+                    )}
+                  </div>
+              }
 
+              {
+                selectedEmployeeId &&
+
+                <div className="form-group">
+                  <input type="date" {...register("dateOfJoining")} />
+
+                  {errors.dateOfJoining && (
+                    <p style={{ color: "red" }}>{errors.dateOfJoining.message}</p>
+                  )}
+                </div>
+
+              }
 
             </div>
+
+
 
             {!selectedEmployeeId && (
 

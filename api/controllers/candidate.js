@@ -1,7 +1,7 @@
 const Candidate = require("../models/candidate")
 
 
-const allowedFields = ['fullName', 'email', 'status', 'isEmployee', 'phoneNumber', 'position', 'experience', 'resume', 'createdBy'];
+const allowedFields = ['fullName', 'email', 'status', 'isEmployee', 'phoneNumber', 'position', 'experience', 'resume', 'createdBy', 'dateOfJoining', 'department'];
 const filterRequestBody = (body, allowedFields) => {
   return allowedFields.reduce((acc, field) => {
     if (body[field] !== undefined) acc[field] = body[field];
@@ -61,16 +61,16 @@ const getCandidateData = async (req, res) => {
 const getAllCandidates = async (req, res) => {
   console.log("fetches candidates")
   try {
-    const { search = '', status, position } = req.query;
+    const { search, status, position } = req.query;
 
     // Build dynamic query
     const query = {};
 
-    if (search) {
+   if (search.trim()) {
+      const regex = new RegExp(search.trim(), 'i'); // Case-insensitive match
       query.$or = [
-        { firstName: { $regex: search, $options: 'i' } },
-        { lastName: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
+        { fullName: regex },
+        { email: regex }
       ];
     }
 
@@ -98,7 +98,7 @@ const getAllCandidates = async (req, res) => {
 const getAllEmployees = async (req, res) => {
   console.log("fetches Employees")
   try {
-    const { search = '', status, role } = req.query;
+    const { search = '', status, position } = req.query;
 
     // Build dynamic query
     const query = {
@@ -107,8 +107,7 @@ const getAllEmployees = async (req, res) => {
 
     if (search) {
       query.$or = [
-        { firstName: { $regex: search, $options: 'i' } },
-        { lastName: { $regex: search, $options: 'i' } },
+        { fullName: { $regex: search, $options: 'i' } },
         { email: { $regex: search, $options: 'i' } },
       ];
     }
@@ -117,8 +116,8 @@ const getAllEmployees = async (req, res) => {
       query.status = status;
     }
 
-    if (role) {
-      query.role = role;
+    if (position) {
+      query.position = position;
     }
 
     const candidates = await Candidate.find(query);

@@ -25,7 +25,7 @@ const Employees = () => {
 	const [filters, setFilters] = useState({
 		search: '',
 		status: '',
-		role: '',
+		position: '',
 	});
 
 	const debouncedFilters = useDebounce(filters);
@@ -79,7 +79,9 @@ const Employees = () => {
 		{ key: 'fullName', label: 'Candidates Name' },
 		{ key: 'email', label: 'Email Address' },
 		{ key: 'phoneNumber', label: 'Phone Number' },
-		{ key: 'position', label: 'Department' },
+		{ key: 'position', label: 'Position' },
+		{ key: 'department', label: 'Department' },
+		{ key: 'dateOfJoining', label: 'Date of joining' },
 		{
 			key: 'actions',
 			label: 'Action',

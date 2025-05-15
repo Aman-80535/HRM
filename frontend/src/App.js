@@ -1,6 +1,5 @@
 import './App.css';
 import '../src/index.css'
-import { Home } from './components/Home';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import SignUp from './components/Signup';
 import LogIn from './components/Login';
@@ -8,6 +7,8 @@ import LogIn from './components/Login';
 import Dashboard from './components/Dashboard';
 import { useSelector } from 'react-redux';
 import Employees from './components/Employees';
+import Leaves from './components/Leaves';
+import Attendance from './components/Attendance';
 
 
 const PublicRoute = ({ Component }) => {
@@ -34,6 +35,8 @@ function App() {
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/candidates" element={<PrivateRoute Component={Dashboard} />} />
         <Route path="/employees" element={<PrivateRoute Component={Employees} />} />
+        <Route path="/leaves" element={<PrivateRoute Component={Leaves} />} />
+        <Route path="/Attendance" element={<PrivateRoute Component={Attendance} />} />
       </Routes>
     </Router>
   );

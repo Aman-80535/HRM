@@ -1,8 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import '../styles/Login.css';
-import { Header } from './Header';
-import Footer from './Footer';
 import { useDispatch, useSelector, } from 'react-redux';
 import { LogInUser } from '../redux/actions/userActions';
 import { useNavigate } from 'react-router-dom';
