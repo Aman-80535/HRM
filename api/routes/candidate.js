@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllCandidates, handleEditCandidate, updateCandidateStatus, getAllEmployees, getCandidateData } = require("../controllers/candidate")
+const { getAllCandidates, handleEditCandidate, updateCandidateStatus, getAllEmployees,getPositionsDropdown, getCandidateData } = require("../controllers/candidate")
 const upload = require('../utils/multer');
 const Candidate = require('../models/candidate');
 
@@ -30,6 +30,7 @@ router.post('/', upload.single('resume'), async (req, res) => {
 });
 
 router.get('/list', getAllCandidates)
+router.get('/positionslist', getPositionsDropdown)
 router.get('/employees/list', getAllEmployees)
 router.get('/:candidateId', getCandidateData)
 router.put('/:candidateId', handleEditCandidate)

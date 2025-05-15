@@ -46,6 +46,13 @@ const Employees = () => {
 		keepPreviousData: true,
 	});
 
+	const { data: positionsList } = useQuery({
+		queryKey: ['positionsList', debouncedFilters],
+		queryFn: () => axios.get(`${process.env.REACT_APP_API_URL}/candidate/positionslist`).then(res => res.data),
+		keepPreviousData: true,
+	});
+
+
 	const queryClient = useQueryClient();
 
 	// delete employee
@@ -134,12 +141,25 @@ const Employees = () => {
 
 					<div className="d-flex flex-wrap align-items-end justify-content-between mb-3 gap-3">
 						<div className="d-flex gap-2">
-							<select className="form-select w-auto border-line border-style" onChange={(e) => setFilters(p => ({ ...p, position: e.target.value }))}>
-								<option value="" disabled selected>Position</option>
-								<option key='all' value=''>All</option>
+							<select
+								className="form-select w-auto border-line border-style"
+								value={filters.position ?? 'placeholder'} // fallback to placeholder if undefined
+								onChange={(e) => {
+									const value = e.target.value;
+									setFilters(p => ({
+										...p,
+										position: value === 'all' ? '' : value  // treat 'all' as empty filter
+									}));
+								}}
+							>
+								<option value="placeholder" disabled hidden>
+									Position
+								</option>
+								<option value="all">All</option>
 								{
-									[...new Set(data?.data.map(d => d.position))].map((pos, ind) =>
-										<option key={ind} value={pos}>{pos}</option>)
+									positionsList?.map((pos, ind) => (
+										<option key={ind} value={pos}>{pos}</option>
+									))
 								}
 							</select>
 						</div>

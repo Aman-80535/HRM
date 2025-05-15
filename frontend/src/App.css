@@ -14,27 +14,40 @@
 }
 
 .marked-date {
-  background-color: #4D007D; /* your purple */
+  background-color: #4D007D;
+  /* your purple */
   color: white;
   font-weight: bold;
   /* add box style */
 }
+
 .leave-count {
-  font-size: 0.75em;
+  font-size: 1.5em;
   color: #fff;
   margin-top: 2px;
 }
+
+.lg-out-btn {
+  border-radius: 19px;
+  border: 1px solid red;
+  color: red;
+}
+
 .react-calendar {
   width: 100%;
   max-width: 300px;
-  font-size: 12px; /* Smaller text */
+  font-size: 12px;
+  /* Smaller text */
 }
 
 .react-calendar__tile {
-  padding: 4px !important;   /* Reduce date box padding */
-  height: 40px !important;   /* Reduce date box height */
+  padding: 4px !important;
+  /* Reduce date box padding */
+  height: 40px !important;
+  /* Reduce date box height */
   line-height: 20px;
 }
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -45,6 +58,7 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
 .react-calendar__tile--now {
   background: none !important;
   color: inherit !important;
@@ -60,6 +74,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

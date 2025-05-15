@@ -75,6 +75,7 @@ const ADDLEAVEMODAL = ({ showModal, closeModal, userData, setShowModal, selected
 			setErrorMsg(null);
 			closeModal();
 			queryClient.invalidateQueries(['leavesList']);
+			queryClient.invalidateQueries(['leavesCountList']);
 		},
 		onError: (error) => {
 			setErrorMsg(`Error: ${error.response?.data?.message || error.message}`);

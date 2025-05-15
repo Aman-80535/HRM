@@ -10,18 +10,18 @@ const filterRequestBody = (body, allowedFields) => {
 };
 
 const updateCandidateStatus = async (req, res) => {
-  const { userId } = req.params;
+  const { candidateId } = req.params;
   const updateData = req.body;
 
   if (updateData.status === 'selected') {
-    updateData.isEmployee =true 
-  }else{
-    updateData.isEmployee =false 
+    updateData.isEmployee = true
+  } else {
+    updateData.isEmployee = false
   }
 
   try {
     const updatedCandidate = await Candidate.findOneAndUpdate(
-      { userId },
+      { _id: candidateId },
       updateData,
       { new: true }
     );
@@ -40,21 +40,40 @@ const updateCandidateStatus = async (req, res) => {
 
 
 const getCandidateData = async (req, res) => {
-    const { candidateId } = req.params;
-  
-    try {
-      const candidate = await Candidate.findById(candidateId);
-  
-      if (!candidate) {
-        return res.status(404).json({ message: 'Candidate not found' });
-      }
-  
-      res.status(200).json(candidate);
-    } catch (error) {
-      console.error('Error fetching candidate by ID:', error);
-      res.status(500).json({ message: 'Internal server error' });
+  const { candidateId } = req.params;
+
+  try {
+    const candidate = await Candidate.findById(candidateId);
+
+    if (!candidate) {
+      return res.status(404).json({ message: 'Candidate not found' });
     }
-  };
+
+    res.status(200).json(candidate);
+  } catch (error) {
+    console.error('Error fetching candidate by ID:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+const getPositionsDropdown = async (req, res) => {
+  const { candidateId } = req.params;
+
+  try {
+    const uniquePositions = await Candidate.distinct('position');
+
+    if (!uniquePositions) {
+      return res.status(404).json({ message: 'Candidate not found' });
+    }
+
+    res.status(200).json(uniquePositions);
+  } catch (error) {
+    console.error('Error fetching:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 
 
@@ -66,7 +85,7 @@ const getAllCandidates = async (req, res) => {
     // Build dynamic query
     const query = {};
 
-   if (search.trim()) {
+    if (search.trim()) {
       const regex = new RegExp(search.trim(), 'i'); // Case-insensitive match
       query.$or = [
         { fullName: regex },
@@ -157,5 +176,6 @@ module.exports = {
   handleEditCandidate,
   updateCandidateStatus,
   getAllEmployees,
-  getCandidateData
+  getCandidateData,
+  getPositionsDropdown
 };

@@ -52,6 +52,12 @@ const Dashboard = () => {
 		keepPreviousData: true,
 	});
 
+	const { data: positionsList } = useQuery({
+		queryKey: ['positionsList', debouncedFilters],
+		queryFn: () => axios.get(`${process.env.REACT_APP_API_URL}/candidate/positionslist`).then(res => res.data),
+		keepPreviousData: true,
+	});
+
 	const queryClient = useQueryClient();
 
 	// update status api
@@ -168,7 +174,6 @@ const Dashboard = () => {
 	];
 
 
-
 	return (
 		<>
 
@@ -177,10 +182,10 @@ const Dashboard = () => {
 				{/* Sidebar */}
 				<Sidebar />
 
-
 				<div className="p-4 px-3 w-100">
 					<div className="d-flex justify-content-between align-items-center mb-3">
 						<h5 className="fw-bold">Candidates</h5>
+						<p>candidate with selected status visible in Employees tab!</p>
 						<div className="border-start-0 gap-3 px-3">
 
 							<Mails />
@@ -200,12 +205,25 @@ const Dashboard = () => {
 								)}
 
 							</select>
-							<select className="form-select w-auto border-line border-style" onChange={(e) => setFilters(p => ({ ...p, position: e.target.value }))}>
-								<option value="" disabled selected>Position</option>
-								<option key='all' value=''>All</option>
+							<select
+								className="form-select w-auto border-line border-style"
+								value={filters.position ?? 'placeholder'} // fallback to placeholder if undefined
+								onChange={(e) => {
+									const value = e.target.value;
+									setFilters(p => ({
+										...p,
+										position: value === 'all' ? '' : value  // treat 'all' as empty filter
+									}));
+								}}
+							>
+								<option value="placeholder" disabled hidden>
+									Position
+								</option>
+								<option value="all">All</option>
 								{
-									[...new Set(data?.data.map(d => d.position))].map((pos, ind) =>
-										<option key={ind} value={pos}>{pos}</option>)
+									positionsList?.map((pos, ind) => (
+										<option key={ind} value={pos}>{pos}</option>
+									))
 								}
 							</select>
 						</div>

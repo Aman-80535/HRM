@@ -29,7 +29,7 @@ const phoneSchema = z
     const phone = parsePhoneNumberFromString(val);
     return phone?.isValid();
   }, {
-    message: "Invalid phone number",
+    message: "Invalid phone number eg: +91",
   });
 
 
@@ -43,20 +43,21 @@ const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmpl
     phoneNumber: phoneSchema,
     position: z.string().min(1, { message: 'position is required' }),
     experience: z.number().min(0, { message: 'experience is required' }),
-    dateOfJoining: z
-      .string()
-      .min(1, { message: "Date is required" })
-      .refine((val) => {
-        const selectedDate = new Date(val);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // Ignore time for today
-        return selectedDate >= today;
-      }, {
-        message: "Date must be in the future",
-      }),
+
     ...(selectedEmployeeId
       ? {
         department: z.string(),
+        dateOfJoining: z
+          .string()
+          .min(1, { message: "Date is required" })
+          .refine((val) => {
+            const selectedDate = new Date(val);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Ignore time for today
+            return selectedDate >= today;
+          }, {
+            message: "Date must be in the future",
+          }),
       } // not required in edit
       : {
         resume: resumeSchema,
@@ -136,13 +137,14 @@ const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmpl
       });
     },
     onSuccess: (data) => {
-      setMessage('User successfully created!');
+      alert('Candidate successfully created!');
       setErrorMsg(null);
       closeModal();
       queryClient.invalidateQueries(['candidates']);
+      queryClient.invalidateQueries(['employees']);
     },
     onError: (error) => {
-      setErrorMsg(`Error: ${error.response?.data?.message || error.message}`);
+      setErrorMsg(`Error: ${error.response?.data?.error || error}`);
       setMessage(null);
     },
   });
@@ -237,18 +239,28 @@ const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmpl
 
             <div className="row mt-3">
               {
-                !selectedEmployeeId ?
-                  <div className="form-group">
-                    <input
-                      type="number"
-                      placeholder="Experience"
-                      {...register("experience", { valueAsNumber: true })}
-                    />
-                    <br />
-                    {errors.experience && (
-                      <p style={{ color: "red" }}>{errors.experience.message}</p>
-                    )}
-                  </div>
+                !selectedEmployeeId ? (
+                  <>
+                    <div className="form-group">
+                      <input
+                        type="number"
+                        placeholder="Experience"
+                        {...register("experience", { valueAsNumber: true })}
+                      />
+                      <br />
+                      {errors.experience && (
+                        <p style={{ color: "red" }}>{errors.experience.message}</p>
+                      )}
+                    </div>
+                    <div className="form-group">
+                      <input type="file" accept="application/pdf" {...register('resume')} placeholder="Resume" />
+                      {errors.resume && (
+                        <p style={{ color: "red" }}>{errors.resume.message}</p>
+                      )}
+                    </div>
+                  </>
+
+                )
                   :
 
                   <div className="form-group">
@@ -284,12 +296,7 @@ const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmpl
             {!selectedEmployeeId && (
 
               <>
-                <div className="form-group">
-                  <input type="file" accept="application/pdf" {...register('resume')} placeholder="Resume" />
-                  {errors.resume && (
-                    <p style={{ color: "red" }}>{errors.resume.message}</p>
-                  )}
-                </div>
+
                 <div className="row mt-3">
                   <div className="form-group d-flex">
                     <label style={{ fontSize: "15px" }} className="d-flex">
@@ -304,7 +311,7 @@ const ModalForm = ({ showModal, closeModal, userData, setShowModal, selectedEmpl
 
               </>
             )}
-            {(error || errorMsg) && <p className="text-danger">{error?.message || errorMsg}</p>}
+            {(error || errorMsg) && <p className="text-danger">{errorMsg || error?.message}</p>}
             <div className=" submit-btn text-center mt-4">
               <button type="submit" style={{ backgroundColor: "#c8c9cd", alignSelf: "anchor-center", borderRadius: "2rem" }} className="save-button ">
                 {isLoading ? "Saving..." : "Save"}

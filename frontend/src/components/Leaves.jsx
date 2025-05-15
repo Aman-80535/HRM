@@ -75,6 +75,7 @@ const Leaves = () => {
 		onSuccess: () => {
 			alert('Leave status updated successfully!');
 			queryClient.invalidateQueries(['leavesList']);
+			queryClient.invalidateQueries(['leavesCountList']);
 		},
 		onError: (error) => {
 			alert(error?.response?.data?.message || 'Failed to update status');

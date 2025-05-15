@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUpUser } from '../redux/actions/userActions';
 import { Link } from 'react-router-dom';
+import { ReactComponent as Logo } from '../assets/svgs/logo.svg';
+
 
 
 
@@ -45,7 +47,9 @@ const SignUp = () => {
 
 	return (
 		<>
-
+			<div className="mt-4 text-center">
+				<Logo /> <strong>LOGO</strong>
+			</div>
 			<div className="container py-5">
 				<div className="row shadow rounded overflow-hidden">
 					{/* Left Section */}

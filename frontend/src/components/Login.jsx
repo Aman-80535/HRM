@@ -4,6 +4,8 @@ import '../styles/Login.css';
 import { useDispatch, useSelector, } from 'react-redux';
 import { LogInUser } from '../redux/actions/userActions';
 import { useNavigate } from 'react-router-dom';
+import { ReactComponent as Logo } from '../assets/svgs/logo.svg';
+
 
 
 
@@ -36,13 +38,15 @@ const LogIn = () => {
 		if (user) {
 			navigate('/dashboard');
 		}
-		console.log("dwdwqd",error)
+		console.log("dwdwqd", error)
 	};
 
 
 	return (
 		<>
-
+			<div className="mt-4 text-center">
+				<Logo /> <strong>LOGO</strong>
+			</div>
 			<div className="container py-5">
 				<div className="row shadow rounded overflow-hidden main-login">
 					{/* Left Section */}
@@ -82,10 +86,10 @@ const LogIn = () => {
 							<button type="submit" className="btn text-white rgr-btn" style={{ backgroundColor: "#4B0082", borderRadius: "20px", }}>
 								{loading ? 'Logging...' : 'Login'}
 							</button>
-							<p style={{color: "grey", cursor:"pointer"}} className='mt-2'>Forgot Password</p>
+							<p style={{ color: "grey", cursor: "pointer" }} className='mt-2'>Forgot Password</p>
 							{error && <div className="error" style={{ color: "red" }}>{error}</div>}
 							<p className="text-center mt-3">
-								Not having any account? <a href="user/signup" className='lgn-btn'><span style={{color: "#4D007D"}}>Register</span></a>
+								Not having any account? <a href="/user/signup" className='lgn-btn'><span style={{ color: "#4D007D" }}>Register</span></a>
 							</p>
 						</form>
 					</div>
