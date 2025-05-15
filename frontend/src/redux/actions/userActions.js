@@ -5,7 +5,7 @@ export const signUpUser = createAsyncThunk(
   'user/signUp',
   async (userData, thunkAPI) => {
     try {
-      const response = await axios.post('http://localhost:8002/user/signup', userData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/signup`, userData);
       console.log(response.data, "5676");
       return response.data; 
     } catch (error) {
@@ -29,7 +29,7 @@ export const LogInUser = createAsyncThunk(
   'user/login',
   async (userData, thunkAPI) => {
     try {
-      const response = await axios.post('http://localhost:8002/user/login', userData);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/login`, userData);
       return response.data;  // Return data if login is successful
     } catch (error) {
       console.log(error.message, "56t76");
@@ -45,7 +45,7 @@ export const GetAllUsers = createAsyncThunk(
   'user/list',
   async (userData, thunkAPI) => {
     try {
-      const response = await axios.get('http://localhost:8002/user/list', userData);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/list`, userData);
       console.log("dwqdqd",response.data.data)// Return data if login is successful
       return response.data;
     } catch (error) {
@@ -67,7 +67,7 @@ export const UpdateUser = createAsyncThunk(
   '/user/update',
   async ({userId, userData, thunkAPI}) => {
     try {
-      const response = await axios.put(`http://localhost:8002/user/update/${userId}`, userData);
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/user/update/${userId}`, userData);
       await localStorage.setItem('authToken', response.data.token);
       return response.data;  // Return data if login is successful
     } catch (error) {
